@@ -1,0 +1,27 @@
+<script setup lang="ts">
+import { RouterLink, RouterView } from "vue-router";
+import HelloWorld from "@/components/HelloWorld.vue";
+import LinkComponent from "@/components/LinkComponent.vue";
+</script>
+
+<template>
+  <header class="p-3 bg-dark text-white">
+    <div class="container">
+      <div
+        class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+      >
+        <ul
+          class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+        >
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/teams">Teams</RouterLink>
+        </ul>
+        <div class="text-end">
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <RouterView />
+  </div>
+</template>
