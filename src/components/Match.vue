@@ -23,7 +23,7 @@
           <MatchPlayerStatistic :players="this.players.radiant" />
         </div>
         <div class="row">
-          <PicsBans :picksBans="this.match.picks_bans" />
+          <PicsBans :picksBans="this.match.picks_bans" :heroes="this.heroes" />
         </div>
         <div class="row">
           <MatchPlayerStatistic :players="this.players.dire" />
@@ -52,29 +52,37 @@ export default {
     return {
       matchId: null,
       match: {},
+      heroes: {},
       players: {
         radiant: [],
         dire: [],
       },
     };
   },
-  async mounted() {
-    await axios
-      .get("https://api.opendota.com/api/matches/" + this.matchId)
-      .then((response) => {
-        this.match = response.data;
+  methods: {
+    async init() {
+      await axios
+        .get("https://api.opendota.com/api/matches/" + this.matchId)
+        .then((response) => {
+          this.match = response.data;
 
-        for (let player of this.match.players) {
-          if (this.players.radiant.length < 5) {
-            this.players.radiant.push(player);
-          } else {
-            this.players.dire.push(player);
+          for (let player of this.match.players) {
+            if (this.players.radiant.length < 5) {
+              this.players.radiant.push(player);
+            } else {
+              this.players.dire.push(player);
+            }
           }
-        }
-      });
+        });
+
+      await axios
+        .get("https://api.opendota.com/api/heroes/")
+        .then((response) => (this.heroes = response.data));
+    },
   },
-  beforeMount() {
+  created() {
     this.matchId = this.$route.params.matchId;
+    this.init();
   },
 };
 </script>

@@ -13,12 +13,11 @@ import PickBanRow from "@/components/Heroes/PickBan/PickBanRow.vue";
 export default {
   name: "PicsBans",
   components: {
-    PickBanRow
+    PickBanRow,
   },
-  props: ["picksBans"],
+  props: ["picksBans", "heroes"],
   data() {
     return {
-      heroes: {},
       picks_bans: {
         radiant: [],
         dire: [],
@@ -27,14 +26,6 @@ export default {
   },
 
   methods: {
-    getHeroes() {
-      axios
-        .get("https://api.opendota.com/api/heroes/")
-        .then((response) => (this.heroes = response.data))
-        .then(() => {
-          this.preparePicksBans(this.picksBans, this.heroes);
-        });
-    },
     preparePicksBans(picksBans, heroes) {
       for (let pickOrBan of picksBans) {
         for (let hero of heroes) {
@@ -58,7 +49,7 @@ export default {
     },
   },
   created() {
-    this.getHeroes();
+    // this.preparePicksBans(this.picksBans, this.heroes);
   },
 };
 </script>
