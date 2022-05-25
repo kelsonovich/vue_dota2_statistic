@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(player, index) in players" v-bind:key="index">
+      <tr v-for="(player, index) in players" :key="index">
         <td>{{ player.name }}</td>
         <td>{{ player.level }}</td>
         <td>
@@ -35,7 +35,7 @@
         <td>{{ player.tower_damage }}</td>
         <td>{{ player.hero_healing }}</td>
       </tr>
-      <tr>
+      <tr v-if="players">
         <td></td>
         <td></td>
         <td>{{ this.total.kills }}</td>
@@ -73,12 +73,17 @@ export default {
       },
     };
   },
-  created() {
-    for (let player of this.players) {
-      for (let property of Object.keys(this.total)) {
-        this.total[property] += player[property];
+  methods: {
+    setTotal() {
+      for (let player of this.players) {
+        for (let property of Object.keys(this.total)) {
+          this.total[property] += player[property];
+        }
       }
-    }
+    },
+  },
+  created() {
+    this.setTotal();
   },
 };
 </script>

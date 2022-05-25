@@ -1,8 +1,14 @@
 <template>
   <div class="mt-2">
-    <PickBanRow :picks-bans="this.picks_bans.radiant" :isRadiant="true" />
+    <PickBanRow
+        v-if="picks_bans"
+        :picks-bans="picks_bans.radiant"
+        :isRadiant="true" />
     <hr />
-    <PickBanRow :picks-bans="this.picks_bans.dire" :isRadiant="false" />
+    <PickBanRow
+        v-if="picks_bans"
+        :picks-bans="picks_bans.dire"
+        :isRadiant="false" />
   </div>
 </template>
 
@@ -24,7 +30,6 @@ export default {
       },
     };
   },
-
   methods: {
     preparePicksBans(picksBans, heroes) {
       for (let pickOrBan of picksBans) {
@@ -49,7 +54,7 @@ export default {
     },
   },
   created() {
-    // this.preparePicksBans(this.picksBans, this.heroes);
+    this.preparePicksBans(this.picksBans, this.heroes);
   },
 };
 </script>

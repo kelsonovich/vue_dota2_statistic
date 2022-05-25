@@ -4,15 +4,15 @@
       <div class="card card-body">
         <div class="row">
           <div class="col-5 text-end">
-            {{ match.radiant_team_id }}
+            {{ radiantTeamId }}
           </div>
           <div class="col-2 text-center">
-            <span class="text-success">{{ match.radiant_score }}</span>
+            <span class="text-success">{{ radiantScore }}</span>
             -
-            <span class="text-danger">{{ match.dire_score }}</span>
+            <span class="text-danger">{{ direScore }}</span>
           </div>
           <div class="col-5 text-start">
-            {{ match.dire_team_id }}
+            {{ direTeamId }}
           </div>
         </div>
       </div>
@@ -20,13 +20,17 @@
     <div class="row">
       <div class="car card-body">
         <div class="row">
-          <MatchPlayerStatistic :players="this.players.radiant" />
+          <MatchPlayerStatistic v-if="players" :players="players.radiant" />
         </div>
         <div class="row">
-          <PicsBans :picksBans="this.match.picks_bans" :heroes="this.heroes" />
+          <PicsBans
+            v-if="match && heroes"
+            :picksBans="match.picks_bans"
+            :heroes="heroes"
+          />
         </div>
         <div class="row">
-          <MatchPlayerStatistic :players="this.players.dire" />
+          <MatchPlayerStatistic v-if="players" :players="players.dire" />
         </div>
       </div>
     </div>
@@ -51,38 +55,67 @@ export default {
   data() {
     return {
       matchId: null,
-      match: {},
-      heroes: {},
-      players: {
-        radiant: [],
-        dire: [],
-      },
+      match: null,
+      heroes: null,
+      players: null,
     };
   },
   methods: {
-    async init() {
-      await axios
+    getMatch() {
+      axios
         .get("https://api.opendota.com/api/matches/" + this.matchId)
         .then((response) => {
           this.match = response.data;
 
-          for (let player of this.match.players) {
-            if (this.players.radiant.length < 5) {
-              this.players.radiant.push(player);
-            } else {
-              this.players.dire.push(player);
-            }
-          }
+          this.setPlayers(this.match);
         });
+    },
+    getHeroes() {
+      axios.get("https://api.opendota.com/api/heroes/").then((response) => {
+        this.heroes = response.data;
+      });
+    },
+    setPlayers(match) {
+      let players = {
+        radiant: [],
+        dire: [],
+      };
 
-      await axios
-        .get("https://api.opendota.com/api/heroes/")
-        .then((response) => (this.heroes = response.data));
+      for (let player of match.players) {
+        if (players.radiant.length < 5) {
+          players.radiant.push(player);
+        } else {
+          players.dire.push(player);
+        }
+      }
+
+      this.players = players;
+    },
+  },
+  computed: {
+    // match() {
+    //   return this.match ? this.match : undefined;
+    // },
+    // heroes() {
+    //   return this.heroes ? this.heroes : undefined;
+    // },
+    radiantTeamId() {
+      return this.match ? this.match.radiant_team_id : "";
+    },
+    direTeamId() {
+      return this.match ? this.match.dire_team_id : "";
+    },
+    radiantScore() {
+      return this.match ? this.match.radiant_score : "";
+    },
+    direScore() {
+      return this.match ? this.match.dire_score : "";
     },
   },
   created() {
     this.matchId = this.$route.params.matchId;
-    this.init();
+    this.getMatch();
+    this.getHeroes();
   },
 };
 </script>
