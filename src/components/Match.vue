@@ -4,7 +4,7 @@
       <div class="card card-body">
         <div class="row">
           <div class="col-5 text-end">
-            {{ radiantTeamId }}
+            {{ radiantTeamName }}
           </div>
           <div class="col-2 text-center">
             <span class="text-success">{{ radiantScore }}</span>
@@ -12,7 +12,7 @@
             <span class="text-danger">{{ direScore }}</span>
           </div>
           <div class="col-5 text-start">
-            {{ direTeamId }}
+            {{ direTeamName }}
           </div>
         </div>
       </div>
@@ -99,11 +99,11 @@ export default {
     // heroes() {
     //   return this.heroes ? this.heroes : undefined;
     // },
-    radiantTeamId() {
-      return this.match ? this.match.radiant_team_id : "";
+    radiantTeamName() {
+      return this.match ? this.match.radiant_team.name : "";
     },
-    direTeamId() {
-      return this.match ? this.match.dire_team_id : "";
+    direTeamName() {
+      return this.match ? this.match.dire_team.name : "";
     },
     radiantScore() {
       return this.match ? this.match.radiant_score : "";
