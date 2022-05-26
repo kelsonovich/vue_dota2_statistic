@@ -20,7 +20,10 @@
     <div class="row">
       <div class="car card-body">
         <div class="row">
-          <MatchPlayerStatistic v-if="players" :players="players.radiant" />
+          <MatchPlayerStatistic
+              v-if="players"
+              :players="players.radiant"
+          />
         </div>
         <div class="row">
           <PicsBans
@@ -30,7 +33,10 @@
           />
         </div>
         <div class="row">
-          <MatchPlayerStatistic v-if="players" :players="players.dire" />
+          <MatchPlayerStatistic
+            v-if="players"
+            :players="players.dire"
+          />
         </div>
       </div>
     </div>
@@ -60,37 +66,10 @@ export default {
       players: null,
     };
   },
-  methods: {
-    getMatch() {
-      axios
-        .get("https://api.opendota.com/api/matches/" + this.matchId)
-        .then((response) => {
-          this.match = response.data;
-
-          this.setPlayers(this.match);
-        });
-    },
-    getHeroes() {
-      axios.get("https://api.opendota.com/api/heroes/").then((response) => {
-        this.heroes = response.data;
-      });
-    },
-    setPlayers(match) {
-      let players = {
-        radiant: [],
-        dire: [],
-      };
-
-      for (let player of match.players) {
-        if (players.radiant.length < 5) {
-          players.radiant.push(player);
-        } else {
-          players.dire.push(player);
-        }
-      }
-
-      this.players = players;
-    },
+  created() {
+    this.matchId = this.$route.params.matchId;
+    this.getMatch();
+    this.getHeroes();
   },
   computed: {
     // match() {
@@ -112,10 +91,37 @@ export default {
       return this.match ? this.match.dire_score : "";
     },
   },
-  created() {
-    this.matchId = this.$route.params.matchId;
-    this.getMatch();
-    this.getHeroes();
+  methods: {
+    getMatch() {
+      axios
+          .get("https://api.opendota.com/api/matches/" + this.matchId)
+          .then((response) => {
+            this.match = response.data;
+
+            this.setPlayers(this.match);
+          });
+    },
+    getHeroes() {
+      axios.get("https://api.opendota.com/api/heroes/").then((response) => {
+        this.heroes = response.data;
+      });
+    },
+    setPlayers(match) {
+      let players = {
+        radiant: [],
+        dire: [],
+      };
+
+      for (let player of match.players) {
+        if (player.isRadiant) {
+          players.radiant.push(player);
+        } else {
+          players.dire.push(player);
+        }
+      }
+
+      this.players = players;
+    },
   },
 };
 </script>
