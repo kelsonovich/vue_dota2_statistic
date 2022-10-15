@@ -4,7 +4,12 @@
       <div class="card card-body">
         <div class="row">
           <div class="col-5 text-end">
-            {{ radiantTeamName }}
+            <div v-if="radiantTeamId">
+              <RouterLink :to="'/team/' + radiantTeamId">{{ radiantTeamName }}</RouterLink>
+            </div>
+            <div v-else>
+              {{ radiantTeamName }}
+            </div>
           </div>
           <div class="col-2 text-center">
             <span class="text-success">{{ radiantScore }}</span>
@@ -12,7 +17,12 @@
             <span class="text-danger">{{ direScore }}</span>
           </div>
           <div class="col-5 text-start">
-            {{ direTeamName }}
+            <div v-if="direTeamId">
+              <RouterLink :to="'/team/' + direTeamId">{{ direTeamName }}</RouterLink>
+            </div>
+            <div v-else>
+              {{ direTeamName }}
+            </div>
           </div>
         </div>
       </div>
@@ -89,6 +99,12 @@ export default {
     },
     direScore() {
       return this.match ? this.match.dire_score : "";
+    },
+    radiantTeamId() {
+      return this.match ? this.match.radiant_team_id : "";
+    },
+    direTeamId() {
+      return this.match ? this.match.dire_team_id : "";
     },
   },
   methods: {

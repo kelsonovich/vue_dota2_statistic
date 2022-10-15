@@ -87,6 +87,9 @@ export default {
       axios
         .get("https://api.opendota.com/api/teams/" + this.teamId + "/matches")
         .then((response) => {
+
+          this.info = [];
+
           for (let item of response.data) {
 
             item.start_date_time =

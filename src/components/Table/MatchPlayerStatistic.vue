@@ -8,7 +8,7 @@
         <th scope="col"><span class="text-danger">D</span></th>
         <th scope="col">A</th>
         <th scope="col">LH/LD</th>
-        <td scope="col">NW</td>
+        <th scope="col">NW</th>
         <th scope="col">GPM</th>
         <th scope="col">XPM</th>
         <th scope="col">HD</th>
