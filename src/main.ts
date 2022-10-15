@@ -9,6 +9,8 @@ import "bootstrap";
 
 const app = createApp(App);
 
+app.config.globalProperties.$apiUrl = "https://api.opendota.com/api"
+
 app.use(createPinia());
 app.use(router);
 

@@ -49,7 +49,7 @@ export default {
   methods: {
     init() {
       axios
-        .get("https://api.opendota.com/api/teams")
+        .get(this.$apiUrl + "/teams")
         // .then((response) => (this.info = response.data))
         .then((response) => {
           for (let item of response.data) {

@@ -64,9 +64,9 @@
 
 <script>
 import axios from "axios";
+import {teamApiService} from "@/services/TeamApiService";
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "Team.vue",
   teamId: null,
   data() {
@@ -79,30 +79,21 @@ export default {
     this.teamId = this.$route.params.teamId;
   },
   methods: {
-    init() {
-      axios
-        .get("https://api.opendota.com/api/teams/" + this.teamId)
-        .then((response) => (this.team = response.data));
+    async init() {
 
-      axios
-        .get("https://api.opendota.com/api/teams/" + this.teamId + "/matches")
-        .then((response) => {
+      this.team = await teamApiService.getTeam(this.teamId);
 
-          this.info = [];
+      this.info = [];
 
-          for (let item of response.data) {
+      let tampVar = await teamApiService.getTeamMatches(this.teamId);
 
-            item.start_date_time =
-                ( new Date(item.start_time * 1000).toLocaleTimeString("ru-RU")) + ' ' +
-                ( new Date(item.start_time * 1000).toLocaleDateString("ru-RU"));
+      for (let item of tampVar) {
+        item.start_date_time =
+            (new Date(item.start_time * 1000).toLocaleTimeString("ru-RU")) + ' ' +
+            (new Date(item.start_time * 1000).toLocaleDateString("ru-RU"));
 
-            this.info.push(item);
-            if (this.info.length > 100) {
-              break;
-            }
-          }
-        });
-      // .then((response) => (this.info = response.data));
+        this.info.push(item);
+      }
     },
   },
   mounted() {

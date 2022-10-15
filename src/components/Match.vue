@@ -110,7 +110,7 @@ export default {
   methods: {
     getMatch() {
       axios
-          .get("https://api.opendota.com/api/matches/" + this.matchId)
+          .get(this.$apiUrl + "/matches/" + this.matchId)
           .then((response) => {
             this.match = response.data;
 
@@ -118,7 +118,7 @@ export default {
           });
     },
     getHeroes() {
-      axios.get("https://api.opendota.com/api/heroes/").then((response) => {
+      axios.get(this.$apiUrl + "/heroes/").then((response) => {
         this.heroes = response.data;
       });
     },
