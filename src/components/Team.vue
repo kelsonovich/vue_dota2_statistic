@@ -65,6 +65,7 @@
 <script>
 import axios from "axios";
 import {teamApiService} from "@/services/TeamApiService";
+import "@/assets/team.css";
 
 export default {
   name: "Team.vue",
@@ -110,4 +111,3 @@ export default {
 };
 </script>
 
-<style scoped></style>
